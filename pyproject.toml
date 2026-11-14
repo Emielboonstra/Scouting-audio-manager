@@ -13,6 +13,7 @@ dependencies = ["PySide6-Essentials>=6.7,<7"]
 scouting-audio = "scouting_audio.gui:main"
 scouting-audio-engine = "scouting_audio.service:main"
 scouting-audio-doctor = "scouting_audio.doctor:main"
+scouting-audio-web = "scouting_audio.web_remote:main"
 
 [tool.setuptools.packages.find]
 include = ["scouting_audio*"]

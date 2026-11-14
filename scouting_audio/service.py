@@ -14,6 +14,7 @@ from .config import SOURCES, Store, config_dir, runtime_dir
 from .ipc import MAX_REQUEST
 from .pipewire import Mixer, run
 from .receivers import Receivers
+from .web_remote import WebRemote
 
 LOG = logging.getLogger(__name__)
 
@@ -23,6 +24,7 @@ class Engine:
         self.store = Store(config_dir() / "config.json")
         self.mixer = Mixer(runtime)
         self.receivers = Receivers(runtime, self.store.data["services"])
+        self.web = WebRemote()
         self.online = False
         self.message = ""
         self.playback = {}
@@ -86,6 +88,11 @@ class Engine:
 
     def dispatch(self, request):
         action = request["action"]
+        if action == "web_settings":
+            return self.web.status()
+        if action == "web_configure":
+            self.web.configure(request["enabled"], request["password"])
+            return self.web.status()
         if action == "state":
             return {
                 "config": self.store.data, "revision": self.store.revision, "instance": self.instance,
@@ -164,6 +171,11 @@ def main():
             with socketserver.UnixStreamServer(str(path), Handler) as server:
                 server.engine = engine
                 server.timeout = 0.2
+                if engine.web.settings["enabled"]:
+                    try:
+                        engine.web.configure(True, engine.web.settings["password"])
+                    except (OSError, ValueError) as exc:
+                        LOG.warning("Webbediening kon niet starten: %s", exc)
                 refresh_at = 0.0
                 while running:
                     if time.monotonic() >= refresh_at:
@@ -171,6 +183,7 @@ def main():
                         refresh_at = time.monotonic() + 0.7
                     server.handle_request()
         finally:
+            engine.web.close()
             engine.receivers.close()
             engine.mixer.close()
             path.unlink(missing_ok=True)

@@ -19,6 +19,12 @@ sh install.sh --autostart
 
 Met `--autostart` start de engine bij het inloggen. Start **Scouting Audio Manager** vanuit het applicatiemenu. De installer schrijft in de gebruikersmappen en gebruikt de bestaande audiosessie. Zonder `--autostart` start de engine bij installatie en bij het openen vanuit het applicatiemenu. `sh uninstall.sh` verwijdert de gebruikersinstallatie en behoudt de configuratie.
 
+## Bedienen vanaf je telefoon
+
+Open **Instellingen → Webbediening**, vink **Bedienen via het lokale netwerk** aan en klik op **Webinstellingen opslaan**. Open het getoonde adres op je telefoon en gebruik het wachtwoord uit hetzelfde paneel. Je kunt het wachtwoord daar wijzigen. De instellingen worden bewaard en de webbediening start met de audio-engine. De telefoon en computer moeten op hetzelfde lokale netwerk zitten.
+
+De pagina regelt het mastervolume, zonevolumes en demping. De webserver gebruikt HTTP. Gebruik hem op een vertrouwd lokaal netwerk en stel geen port forwarding in.
+
 ## Eerste gebruik
 
 1. Zet de eindversterkers laag en controleer of master mute aan staat.

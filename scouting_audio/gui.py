@@ -334,6 +334,12 @@ class Window(QMainWindow):
                 self.dirty = False
                 self.rebuild = True
             return
+        if action in ("web_settings", "web_configure"):
+            self.web_enabled.setChecked(payload["enabled"])
+            self.web_password.setText(payload["password"])
+            self.web_url.setText(payload["url"] or "Geen lokaal IP-adres gevonden")
+            self.web_status.setText("Webbediening actief" if payload["running"] else "Webbediening uit")
+            return
         if action == "logs":
             self.show_logs(payload)
             return
@@ -696,6 +702,26 @@ class Window(QMainWindow):
         row.addWidget(button("Logboek", lambda: self.command("logs")))
         body.addLayout(row)
         layout.addWidget(frame)
+        frame, body = card("Webbediening")
+        form = QFormLayout()
+        self.web_enabled = check("Bedienen via het lokale netwerk", False)
+        self.web_url = QLabel()
+        self.web_url.setTextInteractionFlags(Qt.TextInteractionFlag.TextSelectableByMouse)
+        self.web_password = QLineEdit()
+        self.web_password.setEchoMode(QLineEdit.EchoMode.Password)
+        reveal = check("Wachtwoord tonen", False, lambda visible: self.web_password.setEchoMode(
+            QLineEdit.EchoMode.Normal if visible else QLineEdit.EchoMode.Password))
+        self.web_status = QLabel()
+        form.addRow(self.web_enabled)
+        form.addRow("Adres voor je telefoon", self.web_url)
+        form.addRow("Wachtwoord", self.web_password)
+        form.addRow(reveal)
+        form.addRow(self.web_status)
+        body.addLayout(form)
+        body.addWidget(button("Webinstellingen opslaan", lambda: self.command(
+            "web_configure", enabled=self.web_enabled.isChecked(), password=self.web_password.text())))
+        layout.addWidget(frame)
+        QTimer.singleShot(0, lambda: self.command("web_settings"))
         self.profile_controls(layout)
         layout.addStretch()
         return scroll(page)
