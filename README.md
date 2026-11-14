@@ -11,6 +11,8 @@ Fedora Workstation met GNOME is geschikt als ontwikkelomgeving voor Ubuntu Deskt
 Voer als de gebruiker van de geluidscomputer uit:
 
 ```sh
+git clone https://github.com/Emielboonstra/Scouting-audio-manager.git
+cd Scouting-audio-manager
 python3 -m scouting_audio.doctor
 sh install.sh --autostart
 ```
