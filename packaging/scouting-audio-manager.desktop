@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Scouting Audio Manager
+Comment=Beheer de audiozones en bronnen van de scouting
+Exec=@LAUNCHER@
+Icon=scouting-audio-manager
+Terminal=false
+Categories=AudioVideo;Audio;Mixer;

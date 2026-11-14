@@ -1,0 +1,18 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "scouting-audio-manager"
+version = "0.1.0"
+description = "PipeWire-mixer voor de scoutingvereniging"
+requires-python = ">=3.11"
+dependencies = ["PySide6-Essentials>=6.7,<7"]
+
+[project.scripts]
+scouting-audio = "scouting_audio.gui:main"
+scouting-audio-engine = "scouting_audio.service:main"
+scouting-audio-doctor = "scouting_audio.doctor:main"
+
+[tool.setuptools.packages.find]
+include = ["scouting_audio*"]
